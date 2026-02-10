@@ -1,0 +1,5 @@
+{
+  "name": "prettier-config-custom",
+  "main": "index.json",
+  "private": true
+}
