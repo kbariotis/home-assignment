@@ -1,0 +1,15 @@
+type Grant {
+  id: ID!
+  providerName: String!
+  grantTitle: String!
+  deadline: String
+  applyUrl: String!
+  location: String!
+  areas: [String!]!
+  amount: String
+  sourcedDate: String!
+}
+
+type Query {
+  grants(skip: Int = 0, take: Int = 10): [Grant!]!
+}
