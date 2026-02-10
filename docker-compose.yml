@@ -1,0 +1,16 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: vee-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-vee}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - .docker-data/postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
