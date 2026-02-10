@@ -14,7 +14,7 @@ import { HealthModule } from './health/health.module';
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
+        path: join(process.cwd(), '../../packages/graphql-server/src/index.ts'),
       },
     }),
     GrantsModule,
