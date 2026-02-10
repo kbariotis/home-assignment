@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
+import { GrantSubmission } from './grant-submission.entity';
 
 @Entity('grants')
 export class Grant {
@@ -28,4 +29,7 @@ export class Grant {
 
   @CreateDateColumn({ name: 'sourced_date', type: 'timestamp with time zone' })
   sourcedDate: Date;
+
+  @OneToOne(() => GrantSubmission, (submission) => submission.grant)
+  submission: GrantSubmission;
 }

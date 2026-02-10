@@ -8,6 +8,20 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum SubmissionState {
+    APPROVED = "APPROVED",
+    REJECTED = "REJECTED"
+}
+
+export interface GrantSubmission {
+    id: string;
+    grantId: string;
+    state: SubmissionState;
+    feedback?: Nullable<string>;
+    createdAt: string;
+    grant: Grant;
+}
+
 export interface Grant {
     id: string;
     providerName: string;
@@ -18,10 +32,16 @@ export interface Grant {
     areas: string[];
     amount?: Nullable<string>;
     sourcedDate: string;
+    submission?: Nullable<GrantSubmission>;
 }
 
 export interface IQuery {
-    grants(skip?: Nullable<number>, take?: Nullable<number>): Grant[] | Promise<Grant[]>;
+    grants(skip?: Nullable<number>, take?: Nullable<number>, submitted?: Nullable<boolean>): Grant[] | Promise<Grant[]>;
+    submissions(): GrantSubmission[] | Promise<GrantSubmission[]>;
+}
+
+export interface IMutation {
+    submitGrantFeedback(grantId: string, state: SubmissionState, feedback?: Nullable<string>): GrantSubmission | Promise<GrantSubmission>;
 }
 
 type Nullable<T> = T | null;

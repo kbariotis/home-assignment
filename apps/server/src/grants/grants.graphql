@@ -1,3 +1,17 @@
+enum SubmissionState {
+  APPROVED
+  REJECTED
+}
+
+type GrantSubmission {
+  id: ID!
+  grantId: ID!
+  state: SubmissionState!
+  feedback: String
+  createdAt: String!
+  grant: Grant!
+}
+
 type Grant {
   id: ID!
   providerName: String!
@@ -8,8 +22,14 @@ type Grant {
   areas: [String!]!
   amount: String
   sourcedDate: String!
+  submission: GrantSubmission
 }
 
 type Query {
-  grants(skip: Int = 0, take: Int = 10): [Grant!]!
+  grants(skip: Int = 0, take: Int = 10, submitted: Boolean): [Grant!]!
+  submissions: [GrantSubmission!]!
+}
+
+type Mutation {
+  submitGrantFeedback(grantId: ID!, state: SubmissionState!, feedback: String): GrantSubmission!
 }
