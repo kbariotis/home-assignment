@@ -3,10 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { databaseConfig } from './config/database.config';
 import { GrantsModule } from './grants/grants.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -19,9 +18,8 @@ import { GrantsModule } from './grants/grants.module';
       },
     }),
     GrantsModule,
+    HealthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
 
