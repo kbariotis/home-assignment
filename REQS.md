@@ -1,25 +1,36 @@
-# Requirements
+Grants dashboard - it’s a dashboard that shows customers the grant opportunities offered (the card view) for
+them and the historical grants they approved as relevant (the table view).
 
-This document is extracted from [reqs.pdf](file:///Users/user/code/vee/reqs.pdf).
+You are required to build a BE and a FE to serve the above page.
 
-## Overview
+![alt text](image.png)
 
-Grants dashboard - it's a dashboard that shows customers the grant opportunities offered (the card view) for them and the historical grants they approved as relevant (the table view).
+## BE requirements:
 
-![Page 1](file:///Users/user/code/vee/docs/reqs/page1.png)
+### Technical Requirements ⚙
+- The backend must be implemented using the NestJS framework.
+- The API must be exposed via GraphQL, following industry best practices.
+- GraphQL must use a schema-first approach.
+- The codebase must be written in TypeScript.
+- The application must be packaged and runnable using Docker.
+- The project must include a basic automated test setup.
+- A persistent data layer must be used (Ideally Postgres)
 
-## BE Requirements
+### Functional Requirements 🧩
+- The GraphQL API must expose operations to:
+  - Fetch opportunities.
+  - Submit feedback for an opportunity.
+  - Update opportunity status based on feedback (approved / rejected).
+- The GraphQL API must expose operations to:
+  - Fetch opportunities.
+  - Submit feedback for an opportunity.
+  - Update opportunity status based on feedback (approved / rejected).
+- When feedback is submitted:
+  - The feedback must be persisted in the database.
+  - The opportunity state must be updated accordingly.
+- The API must return consistent and predictable responses suitable for frontend consumption
 
-- **Technical:**
-  - Framework: **NestJS**
-  - API: **GraphQL (schema-first approach)**
-  - Language: **TypeScript**
-  - Database: Any (e.g., PostgreSQL/MongoDB) using Docker
-  - Documentation: Well-explained README
-  - Consistency: Return consistent and predictable responses for FE consumption
-
-## Evaluation Criteria
-
+### Evaluation Criteria 📋
 - Correct usage of NestJS and GraphQL schema-first architecture.
 - Proper separation of concerns (modules, resolvers, services, domain logic).
 - Clean project structure and maintainable code organization.
@@ -28,21 +39,34 @@ Grants dashboard - it's a dashboard that shows customers the grant opportunities
 - Docker configuration quality and reproducibility.
 - Code readability, naming consistency, and clarity.
 
-![Page 2](file:///Users/user/code/vee/docs/reqs/page2.png)
+## FE requirements:
 
-## FE Requirements
+### Technical ⚙
+- Use any React stack (React, Vite, Next.js, etc.) - We encouraging to use NextJS
+- Feel free to use any tool that you are comfortable with. (state management,component library etc)
+- Design matters. Try to implement the UI as close as possible to the design shown in the screenshot.
 
-- **Technical:**
-  - Stack: Any React stack (**Next.js encouraged**)
-  - Tools: Any library for state management, components, etc.
-  - Design: Implement the UI as close as possible to the provided screenshot.
-- **Functional:**
-  - Each opportunity is displayed as a card.
-  - Clickable actions: Thumbs Up (👍) and Thumbs Down (👎).
-  - Interaction: Clicking either icon triggers a feedback input field.
-  - Submission: Feedback is saved; if 👍, the opportunity moves to the "All Grant Opportunities" table; if 👎, it disappears from the cards view.
+### Functional 🧩
+- Each opportunity is displayed as a card.
+- The only clickable actions on a card are:
+  - 👍 Thumbs Up
+  - 👎 Thumbs Down
+- When the user clicks 👍 or 👎:
+  - A feedback input is displayed.
+  - The user can enter text feedback.
+  - The user can submit the feedback.
+- When feedback is submitted:
+  - The feedback is saved.
+  - If 👍 was selected:
+    - The opportunity moves to the “All Grant Opportunities" table.
+  - If 👎 was selected:
+    - The opportunity is removed from the card view and disappears
 
-## General Requirements
+### Evaluation Criteria 📋
+- Clear separation of business logic from UI logic.
+- Component structure and state organization.
+- Correct implementation of the feedback flow.
+- Code readability and maintainability.
 
-- Use standard UI practices for UX gaps.
-- Dockerized setup for both BE and FE.
+### General requirements:
+- We should be able to run both BE and FE.
