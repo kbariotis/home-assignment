@@ -16,14 +16,20 @@ export class GrantsService {
       where.submission = submitted ? Not(IsNull()) : IsNull();
     }
 
-    return this.grantsRepository.find({
-      where,
-      skip,
-      take,
-      order: {
-        sourcedDate: 'DESC',
-      },
-      relations: ['submission'],
-    });
+    const query = this.grantsRepository.createQueryBuilder('grant')
+      .leftJoinAndSelect('grant.submission', 'submission')
+      .orderBy('grant.sourcedDate', 'DESC')
+      .skip(skip)
+      .take(take);
+
+    if (submitted !== undefined) {
+      if (submitted) {
+        query.andWhere('submission.id IS NOT NULL');
+      } else {
+        query.andWhere('submission.id IS NULL');
+      }
+    }
+
+    return query.getMany();
   }
 }
