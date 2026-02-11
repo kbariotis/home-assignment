@@ -1,5 +1,5 @@
+import dayjs from 'dayjs';
 import { GrantSubmission } from 'graphql-server';
-import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
 
 interface SubmissionsTableProps {
   submissions: GrantSubmission[];
@@ -14,24 +14,24 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead>
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-bold text-gray-600 tracking-wider">
                   Foundation name
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-bold text-gray-600 tracking-wider">
                   Grant name
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-bold text-gray-600 tracking-wider">
                   Average amount
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-bold text-gray-600 tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-bold text-gray-600 tracking-wider">
                   Deadline
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-bold text-gray-600 tracking-wider">
                   Match date
                 </th>
               </tr>
@@ -40,15 +40,18 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
               {submissions.map((submission) => (
                 <tr key={submission.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className=" text-gray-600">{submission.grant.providerName}</div>
+                    <div className=" text-gray-500">{submission.grant.providerName}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="  text-gray-600">{submission.grant.grantTitle}</div>
+                    <div className="  text-gray-500">{submission.grant.grantTitle}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className=" text-gray-600 flex items-center">
-                      <CurrencyDollarIcon className="h-4 w-4 mr-2" />
-                      {submission.grant.amount}
+                    <div className=" text-gray-500 flex items-center">
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        maximumSignificantDigits: 3,
+                      }).format(Number(submission.grant.amount))}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -59,18 +62,14 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <div className=" text-gray-600 line-clamp-1">
+                    <div className=" text-gray-500 line-clamp-1">
                       {submission.grant.deadline
-                        ? new Date(Number(submission.grant.deadline)).toLocaleDateString()
+                        ? dayjs(submission.grant.deadline).format('MMMM Do')
                         : ''}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap  text-gray-600">
-                    {new Date(
-                      isNaN(Number(submission.createdAt))
-                        ? submission.createdAt
-                        : Number(submission.createdAt),
-                    ).toLocaleDateString()}
+                  <td className="px-6 py-4 whitespace-nowrap  text-gray-500">
+                    {submission.createdAt ? dayjs(submission.createdAt).format('D MMMM YYYY') : ''}
                   </td>
                 </tr>
               ))}

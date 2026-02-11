@@ -5,6 +5,7 @@ import {
   HandThumbUpIcon,
   HandThumbDownIcon,
 } from '@heroicons/react/24/outline';
+import dayjs from 'dayjs';
 
 interface GrantCardProps {
   grant: Grant;
@@ -42,13 +43,7 @@ export function GrantCard({ grant, onApprove, onReject }: GrantCardProps) {
 
         <div className="flex items-center text-[12px] text-gray-500">
           <CalendarIcon className="flex-shrink-0 mr-1.5 h-3.5 w-3.5 text-gray-400" />
-          <span>
-            {grant.deadline
-              ? new Date(
-                  isNaN(Number(grant.deadline)) ? grant.deadline : Number(grant.deadline),
-                ).toLocaleDateString()
-              : 'Rolling'}
-          </span>
+          <span>{grant.deadline ? dayjs(grant.deadline).format('MMMM Do') : 'Rolling'}</span>
         </div>
 
         <div className="flex flex-wrap gap-1.5 pt-2">
