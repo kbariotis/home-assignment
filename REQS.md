@@ -8,6 +8,7 @@ You are required to build a BE and a FE to serve the above page.
 ## BE requirements:
 
 ### Technical Requirements ⚙
+
 - The backend must be implemented using the NestJS framework.
 - The API must be exposed via GraphQL, following industry best practices.
 - GraphQL must use a schema-first approach.
@@ -17,6 +18,7 @@ You are required to build a BE and a FE to serve the above page.
 - A persistent data layer must be used (Ideally Postgres)
 
 ### Functional Requirements 🧩
+
 - The GraphQL API must expose operations to:
   - Fetch opportunities.
   - Submit feedback for an opportunity.
@@ -27,6 +29,7 @@ You are required to build a BE and a FE to serve the above page.
 - The API must return consistent and predictable responses suitable for frontend consumption
 
 ### Evaluation Criteria 📋
+
 - Correct usage of NestJS and GraphQL schema-first architecture.
 - Proper separation of concerns (modules, resolvers, services, domain logic).
 - Clean project structure and maintainable code organization.
@@ -38,11 +41,13 @@ You are required to build a BE and a FE to serve the above page.
 ## FE requirements:
 
 ### Technical ⚙
+
 - Use any React stack (React, Vite, Next.js, etc.) - We encouraging to use NextJS
 - Feel free to use any tool that you are comfortable with. (state management,component library etc)
 - Design matters. Try to implement the UI as close as possible to the design shown in the screenshot.
 
 ### Functional 🧩
+
 - Each opportunity is displayed as a card.
 - The only clickable actions on a card are:
   - 👍 Thumbs Up
@@ -59,10 +64,12 @@ You are required to build a BE and a FE to serve the above page.
     - The opportunity is removed from the card view and disappears
 
 ### Evaluation Criteria 📋
+
 - Clear separation of business logic from UI logic.
 - Component structure and state organization.
 - Correct implementation of the feedback flow.
 - Code readability and maintainability.
 
 ### General requirements:
+
 - We should be able to run both BE and FE.

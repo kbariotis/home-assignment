@@ -7,7 +7,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "generate": "ts-node generate-typings.ts"
+    "generate": "tsx generate-typings.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
+    "tsx": "^4.0.0",
     "typescript": "^5.7.3"
   }
 }

@@ -1,5 +1,5 @@
-import dataSource from './src/config/database.config';
-import { Grant } from './src/grants/entities/grant.entity';
+import dataSource from './config/database.config';
+import { Grant } from './grants/entities/grant.entity';
 
 async function seed() {
   await dataSource.initialize();

@@ -14,7 +14,7 @@ export const databaseConfig: TypeOrmModuleOptions & DataSourceOptions = {
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'vee',
   entities: [Grant, GrantSubmission],
-  migrations: [__dirname + '/../migrations/*.ts'],
+  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
   synchronize: false, // Always false for production/migrations
   logging: true,
 };

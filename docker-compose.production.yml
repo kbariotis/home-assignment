@@ -1,0 +1,88 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: vee-postgres-prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-vee}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - vee_postgres_prod_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    container_name: vee-server-prod
+    restart: always
+    environment:
+      NODE_ENV: production
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_NAME: ${DB_NAME:-vee}
+      PORT: 3000
+    depends_on:
+      update-db:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+
+  update-db:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    container_name: vee-server-update-db
+    environment:
+       NODE_ENV: production
+       DB_HOST: database
+       DB_PORT: 5432
+       DB_USER: ${DB_USER:-postgres}
+       DB_PASSWORD: ${DB_PASSWORD:-postgres}
+       DB_NAME: ${DB_NAME:-vee}
+    command: ["npx", "typeorm", "migration:run", "-d", "dist/config/database.config.js"]
+    depends_on:
+      database:
+        condition: service_started
+
+  seed-db:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    container_name: vee-server-seed-db
+    environment:
+       NODE_ENV: production
+       DB_HOST: database
+       DB_PORT: 5432
+       DB_USER: ${DB_USER:-postgres}
+       DB_PASSWORD: ${DB_PASSWORD:-postgres}
+       DB_NAME: ${DB_NAME:-vee}
+    command: ["node", "dist/seed.js"]
+    depends_on:
+      update-db:
+        condition: service_completed_successfully
+
+  client:
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile
+      # Needed to pass the API_URL to the client build on build time
+      args:
+        - API_URL=${API_URL:-http://server:3000}
+    container_name: vee-client-prod
+    restart: always
+    environment:
+      # Next.js depends on this env var
+      # on run time
+      PORT: 3001
+    depends_on:
+      - server
+    ports:
+      - "3001:3001"
+
+volumes:
+  vee_postgres_prod_data:
