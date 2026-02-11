@@ -12,8 +12,10 @@
   },
   "devDependencies": {
     "prettier": "^3.0.0",
+    "prettier-config-custom": "*",
     "turbo": "latest"
   },
+  "prettier": "prettier-config-custom",
   "workspaces": [
     "apps/*",
     "packages/*"

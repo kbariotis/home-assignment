@@ -2,6 +2,7 @@
   "name": "server",
   "version": "0.0.1",
   "private": true,
+  "prettier": "prettier-config-custom",
   "scripts": {
     "build": "nest build",
     "seed": "ts-node -r tsconfig-paths/register src/seed.ts",
@@ -52,8 +53,6 @@
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
     "eslint-config-custom": "*",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
     "jest": "^30.0.0",
     "prettier": "^3.4.2",

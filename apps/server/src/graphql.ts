@@ -5,7 +5,6 @@
  */
 
 /* tslint:disable */
-/* eslint-disable */
 
 export interface Grant {
   id: string;
