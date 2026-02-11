@@ -56,4 +56,56 @@ describe('Grants (e2e)', () => {
     expect(response.body.data.grants).toHaveLength(1);
     expect(response.body.data.grants[0].grantTitle).toBe('Test Grant');
   });
+
+  it('submissions ordering (GraphQL Query)', async () => {
+    const dataSource = testDbSetup.getDataSource();
+
+    // Clean up from previous test
+    await dataSource.query('DELETE FROM "grant_submissions"');
+    await dataSource.query('DELETE FROM "grants"');
+
+    // Create two grants and submissions
+    await dataSource.query(`
+      INSERT INTO "grants" ("id", "provider_name", "grant_title", "deadline", "apply_url", "location", "areas", "amount", "sourced_date")
+      VALUES 
+        ('11111111-1111-1111-1111-111111111111', 'B Provider', 'G1', NOW(), 'url1', 'loc1', ARRAY['a1'], 100, NOW()),
+        ('22222222-2222-2222-2222-222222222222', 'A Provider', 'G2', NOW(), 'url2', 'loc2', ARRAY['a2'], 200, NOW())
+    `);
+
+    await dataSource.query(`
+      INSERT INTO "grant_submissions" ("id", "grant_id", "state", "created_at")
+      VALUES 
+        ('33333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 'APPROVED', NOW()),
+        ('44444444-4444-4444-4444-444444444444', '22222222-2222-2222-2222-222222222222', 'APPROVED', NOW())
+    `);
+
+    const query = `
+      query GetSubmissions($orderBy: SubmissionOrderBy, $orderDir: OrderDirection) {
+        submissions(orderBy: $orderBy, orderDir: $orderDir) {
+          id
+          grant {
+            providerName
+          }
+        }
+      }
+    `;
+
+    // Test sort by PROVIDER_NAME ASC
+    const respAsc = await request(app.getHttpServer())
+      .post('/graphql')
+      .send({ query, variables: { orderBy: 'PROVIDER_NAME', orderDir: 'ASC' } });
+
+    expect(respAsc.status).toBe(200);
+    expect(respAsc.body.data.submissions[0].grant.providerName).toBe('A Provider');
+    expect(respAsc.body.data.submissions[1].grant.providerName).toBe('B Provider');
+
+    // Test sort by PROVIDER_NAME DESC
+    const respDesc = await request(app.getHttpServer())
+      .post('/graphql')
+      .send({ query, variables: { orderBy: 'PROVIDER_NAME', orderDir: 'DESC' } });
+
+    expect(respDesc.status).toBe(200);
+    expect(respDesc.body.data.submissions[0].grant.providerName).toBe('B Provider');
+    expect(respDesc.body.data.submissions[1].grant.providerName).toBe('A Provider');
+  });
 });

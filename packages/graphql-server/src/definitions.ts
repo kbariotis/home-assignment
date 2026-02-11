@@ -13,6 +13,16 @@ export enum SubmissionState {
     REJECTED = "REJECTED"
 }
 
+export enum OrderDirection {
+    ASC = "ASC",
+    DESC = "DESC"
+}
+
+export enum SubmissionOrderBy {
+    PROVIDER_NAME = "PROVIDER_NAME",
+    GRANT_TITLE = "GRANT_TITLE"
+}
+
 export interface GrantSubmission {
     id: string;
     grantId: string;
@@ -37,7 +47,7 @@ export interface Grant {
 
 export interface IQuery {
     grants(skip?: Nullable<number>, take?: Nullable<number>, submitted?: Nullable<boolean>): Grant[] | Promise<Grant[]>;
-    submissions(): GrantSubmission[] | Promise<GrantSubmission[]>;
+    submissions(orderBy?: Nullable<SubmissionOrderBy>, orderDir?: Nullable<OrderDirection>): GrantSubmission[] | Promise<GrantSubmission[]>;
 }
 
 export interface IMutation {

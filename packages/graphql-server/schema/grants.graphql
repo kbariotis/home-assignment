@@ -25,9 +25,22 @@ type Grant {
   submission: GrantSubmission
 }
 
+enum OrderDirection {
+  ASC
+  DESC
+}
+
+enum SubmissionOrderBy {
+  PROVIDER_NAME
+  GRANT_TITLE
+}
+
 type Query {
   grants(skip: Int = 0, take: Int = 10, submitted: Boolean): [Grant!]!
-  submissions: [GrantSubmission!]!
+  submissions(
+    orderBy: SubmissionOrderBy = PROVIDER_NAME
+    orderDir: OrderDirection = DESC
+  ): [GrantSubmission!]!
 }
 
 type Mutation {

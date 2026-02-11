@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { SubmissionOrderBy, OrderDirection } from 'graphql-server';
 import { GrantSubmission, SubmissionState } from './entities/grant-submission.entity';
 
 @Injectable()
@@ -30,12 +31,24 @@ export class GrantSubmissionService {
     return this.submissionRepository.save(submission);
   }
 
-  async findAll(): Promise<GrantSubmission[]> {
-    return this.submissionRepository.find({
-      relations: ['grant'],
-      where: { state: SubmissionState.APPROVED },
-      order: { createdAt: 'DESC' },
-    });
+  async findAll(
+    orderBy: SubmissionOrderBy = SubmissionOrderBy.PROVIDER_NAME,
+    orderDir: OrderDirection = OrderDirection.DESC,
+  ): Promise<GrantSubmission[]> {
+    const query = this.submissionRepository
+      .createQueryBuilder('submission')
+      .leftJoinAndSelect('submission.grant', 'grant')
+      .where('submission.state = :state', { state: SubmissionState.APPROVED });
+
+    if (orderBy === SubmissionOrderBy.PROVIDER_NAME) {
+      query.orderBy('grant.providerName', orderDir);
+    } else if (orderBy === SubmissionOrderBy.GRANT_TITLE) {
+      query.orderBy('grant.grantTitle', orderDir);
+    }
+
+    query.addOrderBy('submission.createdAt', 'DESC');
+
+    return query.getMany();
   }
 
   async findByGrantId(grantId: string): Promise<GrantSubmission | null> {

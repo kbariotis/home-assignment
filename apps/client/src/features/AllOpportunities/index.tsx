@@ -1,8 +1,14 @@
 import { SubmissionsTable } from './components/SubmissionsTable';
 import { useSubmissions } from './hooks/useSubmissions';
+import { useSubmissionSorting } from './hooks/useSubmissionSorting';
 
 export default function AllOpportunities() {
-  const { submissions } = useSubmissions();
+  const { sortKey, sortDirection, handleSort } = useSubmissionSorting();
+
+  const { submissions } = useSubmissions({
+    orderBy: sortKey,
+    orderDir: sortDirection,
+  });
 
   return (
     <>
@@ -11,7 +17,14 @@ export default function AllOpportunities() {
           All Grant Opportunities
         </h1>
       </header>
-      {submissions && <SubmissionsTable submissions={submissions} />}
+      {submissions && (
+        <SubmissionsTable
+          submissions={submissions}
+          onSort={handleSort}
+          currentSortKey={sortKey}
+          currentSortDirection={sortDirection}
+        />
+      )}
     </>
   );
 }

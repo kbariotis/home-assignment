@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 import { GrantSubmission } from 'graphql-server';
 
 export const GET_SUBMISSIONS = gql`
-  query GetSubmissions {
-    submissions {
+  query GetSubmissions($orderBy: SubmissionOrderBy, $orderDir: OrderDirection) {
+    submissions(orderBy: $orderBy, orderDir: $orderDir) {
       id
       state
       feedback
@@ -24,8 +24,18 @@ interface SubmissionsData {
   submissions: GrantSubmission[];
 }
 
-export function useSubmissions() {
-  const { data, loading, error, refetch } = useQuery<SubmissionsData>(GET_SUBMISSIONS);
+export type SubmissionSortKey = 'PROVIDER_NAME' | 'GRANT_TITLE';
+export type SubmissionSortDir = 'ASC' | 'DESC';
+
+export interface UseSubmissionsProps {
+  orderBy?: SubmissionSortKey;
+  orderDir?: SubmissionSortDir;
+}
+
+export function useSubmissions({ orderBy, orderDir }: UseSubmissionsProps = {}) {
+  const { data, loading, error, refetch } = useQuery<SubmissionsData>(GET_SUBMISSIONS, {
+    variables: { orderBy, orderDir },
+  });
 
   return {
     loading,

@@ -4,6 +4,8 @@ import { GrantSubmissionService } from './grant-submission.service';
 import { Grant } from './entities/grant.entity';
 import { GrantSubmission, SubmissionState } from './entities/grant-submission.entity';
 
+import { SubmissionOrderBy, OrderDirection } from 'graphql-server';
+
 @Resolver('Grant')
 export class GrantsResolver {
   constructor(
@@ -21,8 +23,11 @@ export class GrantsResolver {
   }
 
   @Query('submissions')
-  async getSubmissions(): Promise<GrantSubmission[]> {
-    return this.submissionService.findAll();
+  async getSubmissions(
+    @Args('orderBy') orderBy: SubmissionOrderBy,
+    @Args('orderDir') orderDir: OrderDirection,
+  ): Promise<GrantSubmission[]> {
+    return this.submissionService.findAll(orderBy, orderDir);
   }
 
   @Mutation('submitGrantFeedback')

@@ -2,18 +2,30 @@ import dayjs from 'dayjs';
 import { GrantSubmission } from 'graphql-server';
 import { Table, Column } from '../../../components/Table';
 
+import { SubmissionSortKey, SubmissionSortDir } from '../hooks/useSubmissions';
+
 interface SubmissionsTableProps {
   submissions: GrantSubmission[];
+  onSort: (sortKey: string) => void;
+  currentSortKey: SubmissionSortKey;
+  currentSortDirection: SubmissionSortDir;
 }
 
-export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
+export function SubmissionsTable({
+  submissions,
+  onSort,
+  currentSortKey,
+  currentSortDirection,
+}: SubmissionsTableProps) {
   const columns: Column<GrantSubmission>[] = [
     {
       header: 'Foundation name',
+      sortKey: 'PROVIDER_NAME',
       render: (submission) => <div className="text-gray-500">{submission.grant.providerName}</div>,
     },
     {
       header: 'Grant name',
+      sortKey: 'GRANT_TITLE',
       render: (submission) => <div className="text-gray-500">{submission.grant.grantTitle}</div>,
     },
     {
@@ -65,6 +77,9 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
       columns={columns}
       keyExtractor={(submission) => submission.id}
       emptyMessage={null}
+      onSort={onSort}
+      currentSortKey={currentSortKey}
+      currentSortDirection={currentSortDirection}
     />
   );
 }

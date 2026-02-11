@@ -21,6 +21,7 @@ interface SubmitFeedbackVariables {
 export function useSubmitFeedback(onCompleted?: () => void) {
   const [mutate, { loading, error }] = useMutation(SUBMIT_FEEDBACK, {
     onCompleted,
+    refetchQueries: ['GetSubmissions', 'GetGrants'],
   });
 
   const submitFeedback = (variables: SubmitFeedbackVariables) => {
