@@ -33,13 +33,13 @@ export function FeedbackModal({
           placeholder="Why are you taking this action?..."
         />
         <div className="flex gap-4">
-          <button 
+          <button
             onClick={onCancel}
             className="flex-1 py-3 px-6 border border-gray-200 rounded-xl text-gray-600 font-semibold hover:bg-gray-50 transition-colors"
           >
             Cancel
           </button>
-          <button 
+          <button
             onClick={onConfirm}
             className={`flex-1 py-3 px-6 rounded-xl text-white font-semibold transition-colors ${state === SubmissionState.APPROVED ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
           >

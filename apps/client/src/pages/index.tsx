@@ -46,27 +46,29 @@ export default function GrantsPage() {
       <Head>
         <title>Grants | Vee</title>
       </Head>
-      
+
       <div className="max-w-7xl mx-auto">
         <header className="mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Available Grants</h1>
-          <p className="mt-4 text-lg text-gray-500">Explore and apply for grants tailored to your needs.</p>
+          <p className="mt-4 text-lg text-gray-500">
+            Explore and apply for grants tailored to your needs.
+          </p>
         </header>
 
         <section className="mb-16">
           <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {grants?.map((grant: Grant) => (
-              <GrantCard 
-                key={grant.id} 
-                grant={grant} 
-                onApprove={handleAction} 
-                onReject={handleAction} 
+              <GrantCard
+                key={grant.id}
+                grant={grant}
+                onApprove={handleAction}
+                onReject={handleAction}
               />
             ))}
           </div>
         </section>
 
-        <FeedbackModal 
+        <FeedbackModal
           isOpen={!!feedbackGrantId}
           state={feedbackState}
           text={feedbackText}
@@ -75,9 +77,7 @@ export default function GrantsPage() {
           onConfirm={handleSubmitFeedback}
         />
 
-        {submissions && (
-          <SubmissionsTable submissions={submissions} />
-        )}
+        {submissions && <SubmissionsTable submissions={submissions} />}
       </div>
     </div>
   );

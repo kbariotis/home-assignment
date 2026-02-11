@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "@apollo/client": "^4.1.4",
-    "graphql-server": "*",
+    "@heroicons/react": "^2.2.0",
     "graphql": "^16.12.0",
+    "graphql-server": "*",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
