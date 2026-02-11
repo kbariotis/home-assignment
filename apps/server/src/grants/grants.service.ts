@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, IsNull, Not } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Grant } from './entities/grant.entity';
 
 @Injectable()
@@ -11,12 +11,8 @@ export class GrantsService {
   ) {}
 
   findAll(skip: number, take: number, submitted?: boolean): Promise<Grant[]> {
-    const where: any = {};
-    if (submitted !== undefined) {
-      where.submission = submitted ? Not(IsNull()) : IsNull();
-    }
-
-    const query = this.grantsRepository.createQueryBuilder('grant')
+    const query = this.grantsRepository
+      .createQueryBuilder('grant')
       .leftJoinAndSelect('grant.submission', 'submission')
       .orderBy('grant.sourcedDate', 'DESC')
       .skip(skip)

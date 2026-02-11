@@ -1,4 +1,5 @@
 import { GrantSubmission } from 'graphql-server';
+import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
 
 interface SubmissionsTableProps {
   submissions: GrantSubmission[];
@@ -9,23 +10,29 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
 
   return (
     <section className="mt-20">
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">Recent Submissions</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-8">All Grant Opportunities</h2>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  Grant
+                  Foundation name
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Grant name
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Average amount
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  Feedback
+                  Deadline
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  Date
+                  Match date
                 </th>
               </tr>
             </thead>
@@ -33,10 +40,16 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
               {submissions.map((submission) => (
                 <tr key={submission.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-bold text-gray-900">
-                      {submission.grant.grantTitle}
+                    <div className=" text-gray-600">{submission.grant.providerName}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="  text-gray-600">{submission.grant.grantTitle}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className=" text-gray-600 flex items-center">
+                      <CurrencyDollarIcon className="h-4 w-4 mr-2" />
+                      {submission.grant.amount}
                     </div>
-                    <div className="text-xs text-gray-400">{submission.grant.providerName}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
@@ -46,11 +59,13 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="text-sm text-gray-600 line-clamp-1">
-                      {submission.feedback || 'No feedback provided'}
+                    <div className=" text-gray-600 line-clamp-1">
+                      {submission.grant.deadline
+                        ? new Date(Number(submission.grant.deadline)).toLocaleDateString()
+                        : ''}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap  text-gray-600">
                     {new Date(
                       isNaN(Number(submission.createdAt))
                         ? submission.createdAt

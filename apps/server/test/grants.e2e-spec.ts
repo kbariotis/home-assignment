@@ -14,14 +14,11 @@ describe('Grants (e2e)', () => {
     const dbConfig = await testDbSetup.start();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot(dbConfig),
-        AppModule,
-      ],
+      imports: [TypeOrmModule.forRoot(dbConfig), AppModule],
     })
-    .overrideModule(TypeOrmModule)
-    .useModule(TypeOrmModule.forRoot(dbConfig))
-    .compile();
+      .overrideModule(TypeOrmModule)
+      .useModule(TypeOrmModule.forRoot(dbConfig))
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
@@ -53,9 +50,7 @@ describe('Grants (e2e)', () => {
       }
     `;
 
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({ query });
+    const response = await request(app.getHttpServer()).post('/graphql').send({ query });
 
     expect(response.status).toBe(200);
     expect(response.body.data.grants).toHaveLength(1);

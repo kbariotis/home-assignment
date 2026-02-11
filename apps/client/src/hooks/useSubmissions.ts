@@ -12,6 +12,8 @@ export const GET_SUBMISSIONS = gql`
       grant {
         id
         grantTitle
+        amount
+        deadline
         providerName
       }
     }

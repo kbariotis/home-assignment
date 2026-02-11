@@ -10,7 +10,11 @@ export class GrantSubmissionService {
     private submissionRepository: Repository<GrantSubmission>,
   ) {}
 
-  async create(grantId: string, state: SubmissionState, feedback?: string): Promise<GrantSubmission> {
+  async create(
+    grantId: string,
+    state: SubmissionState,
+    feedback?: string,
+  ): Promise<GrantSubmission> {
     const existing = await this.submissionRepository.findOne({ where: { grantId } });
     if (existing) {
       existing.state = state;
@@ -29,6 +33,7 @@ export class GrantSubmissionService {
   async findAll(): Promise<GrantSubmission[]> {
     return this.submissionRepository.find({
       relations: ['grant'],
+      where: { state: SubmissionState.APPROVED },
       order: { createdAt: 'DESC' },
     });
   }

@@ -14,14 +14,11 @@ describe('App (e2e)', () => {
     const dbConfig = await testDbSetup.start();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot(dbConfig),
-        AppModule,
-      ],
+      imports: [TypeOrmModule.forRoot(dbConfig), AppModule],
     })
-    .overrideModule(TypeOrmModule)
-    .useModule(TypeOrmModule.forRoot(dbConfig))
-    .compile();
+      .overrideModule(TypeOrmModule)
+      .useModule(TypeOrmModule.forRoot(dbConfig))
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
@@ -37,12 +34,9 @@ describe('App (e2e)', () => {
   });
 
   it('/health (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/health')
-      .expect(200)
-      .expect({
-        status: 'ok',
-        database: 'connected',
-      });
+    return request(app.getHttpServer()).get('/health').expect(200).expect({
+      status: 'ok',
+      database: 'connected',
+    });
   });
 });

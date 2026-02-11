@@ -49,7 +49,7 @@ export default function GrantsPage() {
 
       <div className="max-w-7xl mx-auto">
         <header className="mb-12">
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Available Grants</h1>
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Recent Matches</h1>
           <p className="mt-4 text-lg text-gray-500">
             Explore and apply for grants tailored to your needs.
           </p>
