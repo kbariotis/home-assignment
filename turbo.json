@@ -3,12 +3,18 @@
   "tasks": {
     "build": {
       "dependsOn": [
-        "^build"
+        "^build",
+        "generate"
       ],
       "outputs": [
         ".next/**",
         "!.next/cache/**",
         "dist/**"
+      ]
+    },
+    "generate": {
+      "outputs": [
+        "src/definitions.ts"
       ]
     },
     "lint": {
@@ -18,11 +24,15 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": [
+        "generate"
+      ]
     },
     "type-check": {
       "dependsOn": [
-        "^type-check"
+        "^type-check",
+        "generate"
       ]
     }
   }

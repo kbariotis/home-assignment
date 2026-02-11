@@ -6,15 +6,16 @@ import { join } from 'path';
 import { databaseConfig } from './config/database.config';
 import { GrantsModule } from './grants/grants.module';
 import { HealthModule } from './health/health.module';
+import { SCHEMA_PATH, DEFINITIONS_PATH } from 'graphql-server/dist/node-constants';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
+      typePaths: [SCHEMA_PATH],
       definitions: {
-        path: join(process.cwd(), '../../packages/graphql-server/src/index.ts'),
+        path: DEFINITIONS_PATH,
       },
     }),
     GrantsModule,
