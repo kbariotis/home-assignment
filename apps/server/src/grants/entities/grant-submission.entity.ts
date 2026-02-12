@@ -18,6 +18,8 @@ export class GrantSubmission {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  readonly __typename = 'GrantSubmission';
+
   @Column({ name: 'grant_id' })
   grantId: string;
 

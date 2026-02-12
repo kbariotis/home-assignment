@@ -1,10 +1,10 @@
-import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { GrantsService } from './grants.service';
 import { GrantSubmissionService } from './grant-submission.service';
 import { Grant } from './entities/grant.entity';
 import { GrantSubmission, SubmissionState } from './entities/grant-submission.entity';
 
-import { SubmissionOrderBy, OrderDirection } from 'graphql-server';
+import { SubmissionOrderBy, OrderDirection, ApplicationError } from 'graphql-server';
 
 @Resolver('Grant')
 export class GrantsResolver {
@@ -35,13 +35,7 @@ export class GrantsResolver {
     @Args('grantId') grantId: string,
     @Args('state') state: SubmissionState,
     @Args('feedback') feedback?: string,
-  ): Promise<GrantSubmission> {
+  ): Promise<GrantSubmission | ApplicationError> {
     return this.submissionService.create(grantId, state, feedback);
-  }
-
-  @ResolveField('submission')
-  async getSubmission(@Parent() grant: Grant): Promise<GrantSubmission | null> {
-    if (grant.submission) return grant.submission;
-    return this.submissionService.findByGrantId(grant.id);
   }
 }

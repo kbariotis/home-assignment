@@ -43,6 +43,12 @@ type Query {
   ): [GrantSubmission!]!
 }
 
+union SubmitFeedbackResult = GrantSubmission | ApplicationError
+
 type Mutation {
-  submitGrantFeedback(grantId: ID!, state: SubmissionState!, feedback: String): GrantSubmission!
+  submitGrantFeedback(
+    grantId: ID!
+    state: SubmissionState!
+    feedback: String
+  ): SubmitFeedbackResult!
 }

@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SubmissionOrderBy, OrderDirection } from 'graphql-server';
+
 import { GrantSubmission, SubmissionState } from './entities/grant-submission.entity';
+import { SubmissionAlreadyExistsError } from './errors';
 
 @Injectable()
 export class GrantSubmissionService {
@@ -18,9 +20,7 @@ export class GrantSubmissionService {
   ): Promise<GrantSubmission> {
     const existing = await this.submissionRepository.findOne({ where: { grantId } });
     if (existing) {
-      existing.state = state;
-      existing.feedback = feedback;
-      return this.submissionRepository.save(existing);
+      throw new SubmissionAlreadyExistsError('Submission already exists for this grant');
     }
 
     const submission = this.submissionRepository.create({

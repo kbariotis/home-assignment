@@ -5,9 +5,11 @@ import { SubmissionState } from 'graphql-server';
 export const SUBMIT_FEEDBACK = gql`
   mutation SubmitFeedback($grantId: ID!, $state: SubmissionState!, $feedback: String) {
     submitGrantFeedback(grantId: $grantId, state: $state, feedback: $feedback) {
-      id
-      state
-      feedback
+      ... on GrantSubmission {
+        id
+        state
+        feedback
+      }
     }
   }
 `;
