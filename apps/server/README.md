@@ -46,3 +46,5 @@ The E2E test suite focuses on testing the application flows with a real database
   ```bash
   npm run test:e2e
   ```
+
+> ‼️ If the tests fail, it might be because the Docker service is not running or its socket is not accessible. Prepend the env DOCKER_HOST to specify the socket, e.g. `DOCKER_HOST=unix:///var/run/docker.sock npm run test:e2e`.
