@@ -1,6 +1,7 @@
 import { Grant, SubmissionState } from 'graphql-server';
 import { useState, useCallback } from 'react';
 import { GrantCard } from './components/GrantCard';
+import { GrantCardSkeleton } from './components/GrantCardSkeleton';
 import { FeedbackModal } from './components/FeedbackModal';
 import { useGrants } from './hooks/useGrants';
 import { useSubmitFeedback } from './hooks/useSubmitFeedback';
@@ -33,7 +34,6 @@ export default function NewMatches() {
     setFeedbackState(state);
   }, []);
 
-  if (loading) return <div className="p-8 font-sans">Loading grants...</div>;
   if (error) return <div className="p-8 text-red-500 font-sans">Error: {error.message}</div>;
 
   return (
@@ -43,18 +43,28 @@ export default function NewMatches() {
       </header>
 
       <section className="mb-8">
-        {grants?.length === 0 && <p className="text-gray-500">No new matches found.</p>}
+        {loading ? (
+          <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <GrantCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <>
+            {grants?.length === 0 && <p className="text-gray-500">No new matches found.</p>}
 
-        <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {grants?.map((grant: Grant) => (
-            <GrantCard
-              key={grant.id}
-              grant={grant}
-              onApprove={handleAction}
-              onReject={handleAction}
-            />
-          ))}
-        </div>
+            <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+              {grants?.map((grant: Grant) => (
+                <GrantCard
+                  key={grant.id}
+                  grant={grant}
+                  onApprove={handleAction}
+                  onReject={handleAction}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       <FeedbackModal
