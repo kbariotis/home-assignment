@@ -56,6 +56,8 @@ To set up the project locally for development:
     npm run dev
     ```
 
+The application will be accessible at `http://localhost:3001` (frontend).
+
 ## Getting Started (Production Simulation)
 
 This project includes a Docker Compose configuration that fully replicates a production environment, including running migrations and seeding the database automatically.
