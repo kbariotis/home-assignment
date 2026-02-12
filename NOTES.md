@@ -2,6 +2,14 @@
 
 These are my notes about some of the decisions I've made while working on the assignment.
 
+## Database structure
+
+I've created two separate entities for the Grant matches and the Grant submissions. The idea is that a Grant can be shown to multiple users and a user can have multiple Grant submissions.
+
+- **Grant table**: Each record in this table represents a funding opportunity.
+
+- **Submission table**: Each record in this table represents a submission made by a user for a specific grant.
+
 ## Authentication layer
 
 Authentication/user management has not been implemented at all.

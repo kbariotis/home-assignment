@@ -6,7 +6,7 @@ import { GrantSubmission } from '../grants/entities/grant-submission.entity';
 
 config();
 
-export const databaseConfig: TypeOrmModuleOptions & DataSourceOptions = {
+export const getDatabaseConfig = (): TypeOrmModuleOptions & DataSourceOptions => ({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432', 10),
@@ -17,7 +17,9 @@ export const databaseConfig: TypeOrmModuleOptions & DataSourceOptions = {
   migrations: [__dirname + '/../migrations/*{.ts,.js}'],
   synchronize: false, // Always false for production/migrations
   logging: true,
-};
+});
+
+export const databaseConfig = getDatabaseConfig();
 
 const dataSource = new DataSource(databaseConfig);
 export default dataSource;

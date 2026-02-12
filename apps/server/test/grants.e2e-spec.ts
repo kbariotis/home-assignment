@@ -1,27 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from './../src/app.module';
 import { TestDbSetup } from './test-db.setup';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { createTestApp } from './test-utils';
 
 describe('Grants (e2e)', () => {
   let app: INestApplication;
   let testDbSetup: TestDbSetup;
 
   beforeAll(async () => {
-    testDbSetup = new TestDbSetup();
-    const dbConfig = await testDbSetup.start();
-
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(dbConfig), AppModule],
-    })
-      .overrideModule(TypeOrmModule)
-      .useModule(TypeOrmModule.forRoot(dbConfig))
-      .compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+    const testApp = await createTestApp();
+    app = testApp.app;
+    testDbSetup = testApp.testDbSetup;
   }, 60000);
 
   afterAll(async () => {

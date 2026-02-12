@@ -19,6 +19,8 @@ Here are some of the main commands defined in `package.json`:
 - `npm run dc -- <args>`: Execute `docker-compose` commands with the local development configuration.
 - `npm run dc-prod -- <args>`: Execute `docker-compose` commands with the production simulation configuration.
 
+Check `package.json` for more commands.
+
 ## Getting Started (Development)
 
 To set up the project locally for development:

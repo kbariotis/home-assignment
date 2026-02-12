@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
-import { databaseConfig } from './config/database.config';
+import { getDatabaseConfig } from './config/database.config';
 import { ApplicationErrorInterceptor } from './interceptors/application-error.interceptor';
 
 import { GrantsModule } from './grants/grants.module';
@@ -12,7 +12,9 @@ import { SCHEMA_PATH, DEFINITIONS_PATH } from 'graphql-server';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(databaseConfig),
+    TypeOrmModule.forRootAsync({
+      useFactory: () => getDatabaseConfig(),
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: [SCHEMA_PATH],

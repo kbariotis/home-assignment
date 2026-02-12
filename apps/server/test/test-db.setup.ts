@@ -15,9 +15,10 @@ export class TestDbSetup {
       .withPassword('postgres')
       .start();
 
+    const host = this.container.getHost();
     const dbConfig = {
       type: 'postgres' as const,
-      host: this.container.getHost(),
+      host: host === 'localhost' ? '127.0.0.1' : host,
       port: this.container.getPort(),
       username: this.container.getUsername(),
       password: this.container.getPassword(),
