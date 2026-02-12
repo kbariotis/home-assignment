@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Client Application
 
-## Getting Started
+This is the frontend application for the Vee platform, built with modern web technologies.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: [Next.js](https://nextjs.org/) (v16)
+- **Language**: TypeScript
+- **State Management / Data Fetching**: [Apollo Client](https://www.apollographql.com/docs/react/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (v4)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The project follows a feature-based architecture within the `src` directory:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **`features/`**: Domain-specific modules containing logic and components for specific business capabilities.
+  - `AllOpportunities`: Components and logic for viewing opportunities.
+  - `NewMatches`: Logic for handling new grant matches.
+- **`components/`**: Shared, reusable UI components used across the application (e.g., `Table`, `ConfirmationModal`).
+- **`lib/`**: Configuration and utility files, including the Apollo Client setup.
+- **`pages/`**: Next.js pages and routing.
 
-## Learn More
+## Apollo & Type Integration
 
-To learn more about Next.js, take a look at the following resources:
+The application uses Apollo Client to interact with the backend GraphQL API.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Client Setup**: Configured in `src/lib/apollo-client.ts` and provided via `ApolloProvider` in `_app.tsx`.
+- **Type Safety**: TypeScript types for GraphQL entities (e.g., `Grant`) are imported directly from the shared `graphql-server` package.
+- **Hooks**: Custom hooks (in `features/**/hooks`) encapsulate queries and mutations, using these shared types to ensure type safety for data and variables.
