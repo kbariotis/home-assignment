@@ -1,5 +1,5 @@
 import { Grant, SubmissionState } from 'graphql-server';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { GrantCard } from './components/GrantCard';
 import { FeedbackModal } from './components/FeedbackModal';
 import { useGrants } from './hooks/useGrants';
@@ -8,29 +8,30 @@ import { useSubmitFeedback } from './hooks/useSubmitFeedback';
 export default function NewMatches() {
   const [feedbackGrantId, setFeedbackGrantId] = useState<string | null>(null);
   const [feedbackState, setFeedbackState] = useState<SubmissionState | null>(null);
-  const [feedbackText, setFeedbackText] = useState('');
 
   const { loading, error, grants } = useGrants(0, 4);
 
   const { submitFeedback } = useSubmitFeedback(() => {
     setFeedbackGrantId(null);
-    setFeedbackText('');
   });
 
-  const handleSubmitFeedback = () => {
-    if (feedbackGrantId && feedbackState) {
-      submitFeedback({
-        grantId: feedbackGrantId,
-        state: feedbackState,
-        feedback: feedbackText,
-      });
-    }
-  };
+  const handleSubmitFeedback = useCallback(
+    (text: string) => {
+      if (feedbackGrantId && feedbackState) {
+        submitFeedback({
+          grantId: feedbackGrantId,
+          state: feedbackState,
+          feedback: text,
+        });
+      }
+    },
+    [feedbackGrantId, feedbackState, submitFeedback],
+  );
 
-  const handleAction = (id: string, state: SubmissionState) => {
+  const handleAction = useCallback((id: string, state: SubmissionState) => {
     setFeedbackGrantId(id);
     setFeedbackState(state);
-  };
+  }, []);
 
   if (loading) return <div className="p-8 font-sans">Loading grants...</div>;
   if (error) return <div className="p-8 text-red-500 font-sans">Error: {error.message}</div>;
@@ -57,10 +58,9 @@ export default function NewMatches() {
       </section>
 
       <FeedbackModal
+        key={feedbackGrantId}
         isOpen={!!feedbackGrantId}
         state={feedbackState}
-        text={feedbackText}
-        onTextChange={setFeedbackText}
         onCancel={() => setFeedbackGrantId(null)}
         onConfirm={handleSubmitFeedback}
       />

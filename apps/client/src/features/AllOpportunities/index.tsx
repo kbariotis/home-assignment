@@ -5,10 +5,13 @@ import { useSubmissionSorting } from './hooks/useSubmissionSorting';
 export default function AllOpportunities() {
   const { sortKey, sortDirection, handleSort } = useSubmissionSorting();
 
-  const { submissions } = useSubmissions({
+  const { submissions, loading, error } = useSubmissions({
     orderBy: sortKey,
     orderDir: sortDirection,
   });
+
+  if (loading) return <div className="p-8 font-sans">Loading grants...</div>;
+  if (error) return <div className="p-8 text-red-500 font-sans">Error: {error.message}</div>;
 
   return (
     <>

@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client/react';
+import { useCallback } from 'react';
 import { gql } from '@apollo/client';
 import { SubmissionState } from 'graphql-server';
 
@@ -26,9 +27,12 @@ export function useSubmitFeedback(onCompleted?: () => void) {
     refetchQueries: ['GetSubmissions', 'GetGrants'],
   });
 
-  const submitFeedback = (variables: SubmitFeedbackVariables) => {
-    return mutate({ variables });
-  };
+  const submitFeedback = useCallback(
+    (variables: SubmitFeedbackVariables) => {
+      return mutate({ variables });
+    },
+    [mutate],
+  );
 
   return {
     submitFeedback,
