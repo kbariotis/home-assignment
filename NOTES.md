@@ -1,5 +1,7 @@
 # Notes regarding the assigment
 
+These are my notes about some of the decisions I've made while working on the assignment.
+
 ## Authentication layer
 
 Authentication/user management has not been implemented at all.
@@ -10,7 +12,7 @@ Although the DB structure is such that it will allow for separating Grant matche
 
 GraphQL layer was splitted into its own package that is being shared between the server and client applications.
 
-Although the current structure works, in real world production, may need a more complex setup.
+Although the current structure works, in a real world production state, may need a more complex setup.
 
 Ideally, the package would be published to a package registry and both the server and client applications would depend on it.
 
