@@ -8,7 +8,9 @@
     "generate": "turbo run generate",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "type-check": "turbo type-check"
+    "type-check": "turbo type-check",
+    "dc": "docker-compose -f docker/docker-compose.yml",
+    "dc-prod": "docker-compose -f docker/docker-compose.production.yml"
   },
   "devDependencies": {
     "prettier": "^3.0.0",
