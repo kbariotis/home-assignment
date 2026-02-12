@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 
 interface GrantCardProps {
   grant: Grant;
+  isLoading?: boolean;
   onApprove: (id: string, state: SubmissionState) => void;
   onReject: (id: string, state: SubmissionState) => void;
 }
@@ -21,7 +22,7 @@ function AreaLabel({ label }: { label: string }) {
   );
 }
 
-export function GrantCard({ grant, onApprove, onReject }: GrantCardProps) {
+export function GrantCard({ grant, isLoading = false, onApprove, onReject }: GrantCardProps) {
   return (
     <div className="group relative bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-orange-200 transition-all duration-300 flex flex-col h-full">
       <div className="mb-4 flex items-center justify-between">
@@ -40,20 +41,28 @@ export function GrantCard({ grant, onApprove, onReject }: GrantCardProps) {
 
         {!grant.submission && (
           <div className="flex gap-1.5">
-            <button
-              onClick={() => onApprove(grant.id, SubmissionState.APPROVED)}
-              className="flex justify-center items-center p-1.5 border border-gray-200 rounded-sm shadow-sm text-gray-400 bg-white hover:bg-green-50 hover:border-green-200 hover:text-green-600 transition-all cursor-pointer active:scale-95"
-              title="Approve"
-            >
-              <HandThumbUpIcon className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => onReject(grant.id, SubmissionState.REJECTED)}
-              className="flex justify-center items-center p-1.5 border border-gray-200 rounded-sm shadow-sm text-gray-400 bg-white hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all cursor-pointer active:scale-95"
-              title="Reject"
-            >
-              <HandThumbDownIcon className="h-4 w-4" />
-            </button>
+            {isLoading ? (
+              <div className="h-8 w-16 bg-gray-50 rounded-sm flex items-center justify-center border border-gray-200">
+                <div className="w-4 h-4 border-2 border-gray-300 border-t-orange-500 rounded-full animate-spin" />
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => onApprove(grant.id, SubmissionState.APPROVED)}
+                  className="flex justify-center items-center p-1.5 border border-gray-200 rounded-sm shadow-sm text-gray-400 bg-white hover:bg-green-50 hover:border-green-200 hover:text-green-600 transition-all cursor-pointer active:scale-95"
+                  title="Approve"
+                >
+                  <HandThumbUpIcon className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => onReject(grant.id, SubmissionState.REJECTED)}
+                  className="flex justify-center items-center p-1.5 border border-gray-200 rounded-sm shadow-sm text-gray-400 bg-white hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all cursor-pointer active:scale-95"
+                  title="Reject"
+                >
+                  <HandThumbDownIcon className="h-4 w-4" />
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>

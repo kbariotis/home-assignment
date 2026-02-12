@@ -1,5 +1,6 @@
 import { Grant, SubmissionState } from 'graphql-server';
 import { useState, useCallback } from 'react';
+import { useToast } from '@/features/Toast/ToastContext';
 import { GrantCard } from './components/GrantCard';
 import { GrantCardSkeleton } from './components/GrantCardSkeleton';
 import { FeedbackModal } from './components/FeedbackModal';
@@ -7,26 +8,47 @@ import { useGrants } from './hooks/useGrants';
 import { useSubmitFeedback } from './hooks/useSubmitFeedback';
 
 export default function NewMatches() {
+  const { showToast } = useToast();
   const [feedbackGrantId, setFeedbackGrantId] = useState<string | null>(null);
   const [feedbackState, setFeedbackState] = useState<SubmissionState | null>(null);
+  const [processingGrantId, setProcessingGrantId] = useState<string | null>(null);
 
   const { loading, error, grants } = useGrants(0, 4);
 
-  const { submitFeedback } = useSubmitFeedback(() => {
-    setFeedbackGrantId(null);
-  });
+  const { submitFeedback } = useSubmitFeedback();
 
   const handleSubmitFeedback = useCallback(
-    (text: string) => {
+    async (text: string) => {
       if (feedbackGrantId && feedbackState) {
-        submitFeedback({
-          grantId: feedbackGrantId,
-          state: feedbackState,
-          feedback: text,
-        });
+        const idToProcess = feedbackGrantId;
+        const stateToProcess = feedbackState;
+
+        // Close modal immediately
+        setFeedbackGrantId(null);
+        setFeedbackState(null);
+        setProcessingGrantId(idToProcess);
+
+        try {
+          const result = await submitFeedback({
+            grantId: idToProcess,
+            state: stateToProcess,
+            feedback: text,
+          });
+
+          if (result.data && 'message' in result.data.submitGrantFeedback) {
+            showToast(result.data.submitGrantFeedback.message, 'error');
+          } else {
+            showToast('Feedback submitted successfully', 'success');
+          }
+        } catch (e: unknown) {
+          const message = e instanceof Error ? e.message : 'An error occurred';
+          showToast(message, 'error');
+        } finally {
+          setProcessingGrantId(null);
+        }
       }
     },
-    [feedbackGrantId, feedbackState, submitFeedback],
+    [feedbackGrantId, feedbackState, submitFeedback, showToast],
   );
 
   const handleAction = useCallback((id: string, state: SubmissionState) => {
@@ -58,6 +80,7 @@ export default function NewMatches() {
                 <GrantCard
                   key={grant.id}
                   grant={grant}
+                  isLoading={processingGrantId === grant.id}
                   onApprove={handleAction}
                   onReject={handleAction}
                 />
