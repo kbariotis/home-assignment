@@ -21,6 +21,10 @@ interface TableProps<T> {
   emptyMessage?: string | null;
 }
 
+/**
+ * General purpose Table component. Supports
+ * sorting.
+ */
 export function Table<T>({
   data,
   columns,

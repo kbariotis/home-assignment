@@ -12,6 +12,10 @@ interface ConfirmationModalProps {
   confirmButtonVariant?: 'primary' | 'danger' | 'success';
 }
 
+/**
+ * Confirmation modal component with
+ * Cancel/Confirm actions
+ */
 export function ConfirmationModal({
   isOpen,
   onCancel,

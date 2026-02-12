@@ -1,6 +1,10 @@
 import dataSource from './config/database.config';
 import { Grant } from './grants/entities/grant.entity';
 
+/**
+ * Simple seed function to populate
+ * the database with some grants
+ */
 async function seed() {
   await dataSource.initialize();
   const repository = dataSource.getRepository(Grant);

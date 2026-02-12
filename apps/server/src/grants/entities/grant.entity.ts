@@ -1,6 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
 import { GrantSubmission } from './grant-submission.entity';
 
+/**
+ * Entity representing a grant
+ */
 @Entity('grants')
 export class Grant {
   @PrimaryGeneratedColumn('uuid')

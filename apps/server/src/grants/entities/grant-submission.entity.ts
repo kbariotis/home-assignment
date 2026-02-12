@@ -13,6 +13,11 @@ export enum SubmissionState {
   REJECTED = 'REJECTED',
 }
 
+/**
+ * Entity representing a grant submission
+ * In the future, this will represent
+ * a specific user submitting a grant
+ */
 @Entity('grant_submissions')
 export class GrantSubmission {
   @PrimaryGeneratedColumn('uuid')
