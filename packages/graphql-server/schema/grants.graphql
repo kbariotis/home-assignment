@@ -35,20 +35,30 @@ enum SubmissionOrderBy {
   GRANT_TITLE
 }
 
+input GrantFilterInput {
+  skip: Int = 0
+  take: Int = 10
+  submitted: Boolean
+}
+
+input SubmissionOrderInput {
+  field: SubmissionOrderBy = PROVIDER_NAME
+  direction: OrderDirection = DESC
+}
+
 type Query {
-  grants(skip: Int = 0, take: Int = 10, submitted: Boolean): [Grant!]!
-  submissions(
-    orderBy: SubmissionOrderBy = PROVIDER_NAME
-    orderDir: OrderDirection = DESC
-  ): [GrantSubmission!]!
+  grants(input: GrantFilterInput): [Grant!]!
+  submissions(orderBy: SubmissionOrderInput): [GrantSubmission!]!
 }
 
 union SubmitFeedbackResult = GrantSubmission | ApplicationError
 
+input SubmitGrantFeedbackInput {
+  grantId: ID!
+  state: SubmissionState!
+  feedback: String
+}
+
 type Mutation {
-  submitGrantFeedback(
-    grantId: ID!
-    state: SubmissionState!
-    feedback: String
-  ): SubmitFeedbackResult!
+  submitGrantFeedback(input: SubmitGrantFeedbackInput!): SubmitFeedbackResult!
 }

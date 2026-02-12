@@ -2,9 +2,14 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { GrantsService } from './grants.service';
 import { GrantSubmissionService } from './grant-submission.service';
 import { Grant } from './entities/grant.entity';
-import { GrantSubmission, SubmissionState } from './entities/grant-submission.entity';
+import { GrantSubmission } from './entities/grant-submission.entity';
 
-import { SubmissionOrderBy, OrderDirection, ApplicationError } from 'graphql-server';
+import {
+  ApplicationError,
+  GrantFilterInput,
+  SubmissionOrderInput,
+  SubmitGrantFeedbackInput,
+} from 'graphql-server';
 
 @Resolver('Grant')
 export class GrantsResolver {
@@ -14,28 +19,19 @@ export class GrantsResolver {
   ) {}
 
   @Query('grants')
-  async getGrants(
-    @Args('skip') skip: number,
-    @Args('take') take: number,
-    @Args('submitted') submitted?: boolean,
-  ): Promise<Grant[]> {
-    return this.grantsService.findAll(skip, take, submitted);
+  async getGrants(@Args('input') input: GrantFilterInput): Promise<Grant[]> {
+    return this.grantsService.findAll(input.skip, input.take, input.submitted);
   }
 
   @Query('submissions')
-  async getSubmissions(
-    @Args('orderBy') orderBy: SubmissionOrderBy,
-    @Args('orderDir') orderDir: OrderDirection,
-  ): Promise<GrantSubmission[]> {
-    return this.submissionService.findAll(orderBy, orderDir);
+  async getSubmissions(@Args('orderBy') orderBy: SubmissionOrderInput): Promise<GrantSubmission[]> {
+    return this.submissionService.findAll(orderBy.field, orderBy.direction);
   }
 
   @Mutation('submitGrantFeedback')
   async submitFeedback(
-    @Args('grantId') grantId: string,
-    @Args('state') state: SubmissionState,
-    @Args('feedback') feedback?: string,
+    @Args('input') input: SubmitGrantFeedbackInput,
   ): Promise<GrantSubmission | ApplicationError> {
-    return this.submissionService.create(grantId, state, feedback);
+    return this.submissionService.create(input.grantId, input.state, input.feedback);
   }
 }

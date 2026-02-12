@@ -11,9 +11,11 @@ describe('useSubmitFeedback', () => {
         request: {
           query: SUBMIT_FEEDBACK,
           variables: {
-            grantId: 'g1',
-            state: SubmissionState.APPROVED,
-            feedback: 'Great!',
+            input: {
+              grantId: 'g1',
+              state: SubmissionState.APPROVED,
+              feedback: 'Great!',
+            },
           },
         },
         result: {
@@ -48,8 +50,11 @@ describe('useSubmitFeedback', () => {
       request: {
         query: SUBMIT_FEEDBACK,
         variables: {
-          grantId: 'g1',
-          state: SubmissionState.REJECTED,
+          input: {
+            grantId: 'g1',
+            state: SubmissionState.REJECTED,
+            feedback: 'Great!',
+          },
         },
       },
       error: new Error('Submission failed'),
@@ -64,6 +69,7 @@ describe('useSubmitFeedback', () => {
         await result.current.submitFeedback({
           grantId: 'g1',
           state: SubmissionState.REJECTED,
+          feedback: 'Great!',
         });
       } catch (e) {
         // Error is handled by Apollo, but we can check the error state

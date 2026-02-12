@@ -1,10 +1,15 @@
 import { useQuery } from '@apollo/client/react';
 import { gql } from '@apollo/client';
-import { GrantSubmission } from 'graphql-server';
+import {
+  GrantSubmission,
+  SubmissionOrderInput,
+  SubmissionOrderBy,
+  OrderDirection,
+} from 'graphql-server';
 
 export const GET_SUBMISSIONS = gql`
-  query GetSubmissions($orderBy: SubmissionOrderBy, $orderDir: OrderDirection) {
-    submissions(orderBy: $orderBy, orderDir: $orderDir) {
+  query GetSubmissions($orderBy: SubmissionOrderInput) {
+    submissions(orderBy: $orderBy) {
       id
       state
       feedback
@@ -33,8 +38,13 @@ export interface UseSubmissionsProps {
 }
 
 export function useSubmissions({ orderBy, orderDir }: UseSubmissionsProps = {}) {
+  const input: SubmissionOrderInput = {
+    field: (orderBy as SubmissionOrderBy) || SubmissionOrderBy.PROVIDER_NAME,
+    direction: (orderDir as OrderDirection) || OrderDirection.DESC,
+  };
+
   const { data, loading, error, refetch } = useQuery<SubmissionsData>(GET_SUBMISSIONS, {
-    variables: { orderBy, orderDir },
+    variables: { orderBy: input },
   });
 
   return {

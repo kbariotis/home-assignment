@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client/react';
 import { gql } from '@apollo/client';
-import { Grant } from 'graphql-server';
+import { Grant, GrantFilterInput } from 'graphql-server';
 
 export const GET_GRANTS = gql`
-  query GetGrants($skip: Int, $take: Int) {
-    grants(skip: $skip, take: $take, submitted: false) {
+  query GetGrants($input: GrantFilterInput) {
+    grants(input: $input) {
       id
       providerName
       grantTitle
@@ -26,8 +26,9 @@ interface GrantsData {
 }
 
 export function useGrants(skip: number = 0, take: number = 4) {
+  const input: GrantFilterInput = { skip, take, submitted: false };
   const { loading, error, data, refetch } = useQuery<GrantsData>(GET_GRANTS, {
-    variables: { skip, take },
+    variables: { input },
   });
 
   return {

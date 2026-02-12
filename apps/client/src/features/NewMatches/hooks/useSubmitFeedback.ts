@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client/react';
 import { useCallback } from 'react';
 import { gql } from '@apollo/client';
-import { SubmissionState } from 'graphql-server';
+import { SubmissionState, SubmitGrantFeedbackInput } from 'graphql-server';
 
 export const SUBMIT_FEEDBACK = gql`
-  mutation SubmitFeedback($grantId: ID!, $state: SubmissionState!, $feedback: String) {
-    submitGrantFeedback(grantId: $grantId, state: $state, feedback: $feedback) {
+  mutation SubmitFeedback($input: SubmitGrantFeedbackInput!) {
+    submitGrantFeedback(input: $input) {
       ... on GrantSubmission {
         id
         state
@@ -29,7 +29,12 @@ export function useSubmitFeedback(onCompleted?: () => void) {
 
   const submitFeedback = useCallback(
     (variables: SubmitFeedbackVariables) => {
-      return mutate({ variables });
+      const input: SubmitGrantFeedbackInput = {
+        grantId: variables.grantId,
+        state: variables.state,
+        feedback: variables.feedback,
+      };
+      return mutate({ variables: { input } });
     },
     [mutate],
   );

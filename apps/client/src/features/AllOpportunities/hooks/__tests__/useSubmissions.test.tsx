@@ -6,7 +6,12 @@ const mocks = [
   {
     request: {
       query: GET_SUBMISSIONS,
-      variables: { orderBy: undefined, orderDir: undefined },
+      variables: {
+        orderBy: {
+          field: 'PROVIDER_NAME',
+          direction: 'DESC',
+        },
+      },
     },
     result: {
       data: {
@@ -55,7 +60,12 @@ describe('useSubmissions', () => {
     const errorMock = {
       request: {
         query: GET_SUBMISSIONS,
-        variables: { orderBy: undefined, orderDir: undefined },
+        variables: {
+          orderBy: {
+            field: 'PROVIDER_NAME',
+            direction: 'DESC',
+          },
+        },
       },
       error: new Error('An error occurred'),
     };

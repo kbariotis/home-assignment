@@ -41,8 +41,8 @@ describe('Grants (e2e)', () => {
     `);
 
     const query = `
-      query {
-        grants(skip: 0, take: 10) {
+      query Grants($input: GrantFilterInput) {
+        grants(input: $input) {
           id
           grantTitle
           providerName
@@ -50,7 +50,17 @@ describe('Grants (e2e)', () => {
       }
     `;
 
-    const response = await request(app.getHttpServer()).post('/graphql').send({ query });
+    const response = await request(app.getHttpServer())
+      .post('/graphql')
+      .send({
+        query,
+        variables: {
+          input: {
+            skip: 0,
+            take: 10,
+          },
+        },
+      });
 
     expect(response.status).toBe(200);
     expect(response.body.data.grants).toHaveLength(1);
@@ -80,8 +90,8 @@ describe('Grants (e2e)', () => {
     `);
 
     const query = `
-      query GetSubmissions($orderBy: SubmissionOrderBy, $orderDir: OrderDirection) {
-        submissions(orderBy: $orderBy, orderDir: $orderDir) {
+      query GetSubmissions($orderBy: SubmissionOrderInput) {
+        submissions(orderBy: $orderBy) {
           id
           grant {
             providerName
@@ -93,7 +103,15 @@ describe('Grants (e2e)', () => {
     // Test sort by PROVIDER_NAME ASC
     const respAsc = await request(app.getHttpServer())
       .post('/graphql')
-      .send({ query, variables: { orderBy: 'PROVIDER_NAME', orderDir: 'ASC' } });
+      .send({
+        query,
+        variables: {
+          orderBy: {
+            field: 'PROVIDER_NAME',
+            direction: 'ASC',
+          },
+        },
+      });
 
     expect(respAsc.status).toBe(200);
     expect(respAsc.body.data.submissions[0].grant.providerName).toBe('A Provider');
@@ -102,7 +120,15 @@ describe('Grants (e2e)', () => {
     // Test sort by PROVIDER_NAME DESC
     const respDesc = await request(app.getHttpServer())
       .post('/graphql')
-      .send({ query, variables: { orderBy: 'PROVIDER_NAME', orderDir: 'DESC' } });
+      .send({
+        query,
+        variables: {
+          orderBy: {
+            field: 'PROVIDER_NAME',
+            direction: 'DESC',
+          },
+        },
+      });
 
     expect(respDesc.status).toBe(200);
     expect(respDesc.body.data.submissions[0].grant.providerName).toBe('B Provider');
