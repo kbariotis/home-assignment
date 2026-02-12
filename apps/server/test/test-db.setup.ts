@@ -1,6 +1,7 @@
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
 import { Grant } from '../src/grants/entities/grant.entity';
+import { GrantSubmission } from '../src/grants/entities/grant-submission.entity';
 import * as path from 'path';
 
 export class TestDbSetup {
@@ -21,7 +22,7 @@ export class TestDbSetup {
       username: this.container.getUsername(),
       password: this.container.getPassword(),
       database: this.container.getDatabase(),
-      entities: [Grant],
+      entities: [Grant, GrantSubmission],
       migrations: [path.join(__dirname, '../src/migrations/*.ts')],
       logging: false,
     };

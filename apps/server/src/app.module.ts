@@ -8,7 +8,7 @@ import { ApplicationErrorInterceptor } from './interceptors/application-error.in
 
 import { GrantsModule } from './grants/grants.module';
 import { HealthModule } from './health/health.module';
-import { SCHEMA_PATH, DEFINITIONS_PATH } from 'graphql-server/dist/node-constants';
+import { SCHEMA_PATH, DEFINITIONS_PATH } from 'graphql-server';
 
 @Module({
   imports: [

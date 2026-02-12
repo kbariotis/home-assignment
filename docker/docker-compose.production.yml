@@ -14,7 +14,7 @@ services:
 
   server:
     build:
-      context: .
+      context: ../
       dockerfile: apps/server/Dockerfile
     container_name: vee-server-prod
     restart: always
@@ -34,7 +34,7 @@ services:
 
   update-db:
     build:
-      context: .
+      context: ../
       dockerfile: apps/server/Dockerfile
     container_name: vee-server-update-db
     environment:
@@ -51,7 +51,7 @@ services:
 
   seed-db:
     build:
-      context: .
+      context: ../
       dockerfile: apps/server/Dockerfile
     container_name: vee-server-seed-db
     environment:
@@ -68,7 +68,7 @@ services:
 
   client:
     build:
-      context: .
+      context: ../
       dockerfile: apps/client/Dockerfile
       # Needed to pass the API_URL to the client build on build time
       args:
