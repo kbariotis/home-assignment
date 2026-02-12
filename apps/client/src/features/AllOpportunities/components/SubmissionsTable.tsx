@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { GrantSubmission } from 'graphql-server';
-import { Table, Column } from '../../../components/Table';
+import { Table, Column } from '@/components/Table';
 
 import { SubmissionSortKey, SubmissionSortDir } from '../hooks/useSubmissions';
 

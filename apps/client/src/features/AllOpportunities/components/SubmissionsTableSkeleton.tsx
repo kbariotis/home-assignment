@@ -1,4 +1,4 @@
-import { Table, Column } from '../../../components/Table';
+import { Table, Column } from '@/components/Table';
 
 interface SkeletonItem {
   id: number;
