@@ -14,10 +14,14 @@ GraphQL layer was splitted into its own package that is being shared between the
 
 Although the current structure works, in a real world production state, may need a more complex setup.
 
-Ideally, the package would be published to a package registry and both the server and client applications would depend on it.
+Ideally, the package would be published to a package registry and both the server and client applications would depend on it. Another option would be to let the client generate its own types from the server schema on build time.
 
 ## Testing
 
 The server has is mostly covered by the end to end suite which is designed to be fully end to end but to cover fewer scenarios. More unit tests are needed though for each individual module.
 
 On the client, I've tried to test mostly functionality. More end to end tests are needed.
+
+## Env variables management
+
+I've used dotenv to manage environment variables. As it is now, not much configuration is needed as the default values are being used everywhere. But the application is able to consume env variables from the environment.
